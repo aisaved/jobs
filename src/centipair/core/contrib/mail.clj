@@ -38,7 +38,7 @@
 
 
 (defn send-test-email [mail]
-  (println "sending test email")
+  (timbre/info "Sending test email.")
   (send-message email-settings
                 {:from "test@centipair.com"
                  :to "devasiajosephtest@gmail.com"
@@ -47,7 +47,7 @@
 
 
 (defn send-mail [mail]
-  (println "sending email")
+  (timbre/info "Sending mail")
   (case (:purpose mail)
     "registration" (send-registration-email (:params mail))
     "test" (send-test-email (:params mail))))

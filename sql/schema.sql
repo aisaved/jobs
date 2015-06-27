@@ -177,3 +177,12 @@ CREATE TABLE job_credits(
        REFERENCES user_account (user_account_id) MATCH SIMPLE 
        ON DELETE CASCADE
        );
+
+
+CREATE TABLE job_profile(
+       job_profile_id integer,
+       job_profile_title varchar 1024,
+       job_profile_description text,
+       job_profile_tags text
+       
+       )

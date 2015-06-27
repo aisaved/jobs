@@ -85,6 +85,21 @@
        :page 0})))
 
 
+(defn get-job-list
+  [request]
+  (let [params (:params request)
+        offset-limit-params (offset-limit (:page params) (:per params))
+        jobs (select job
+                     (fields :job_id :job_title)
+                     (limit (:limit offset-limit-params))
+                     (offset (:offset offset-limit-params)))
+        total (count jobs)
+        page (if (nil? (:page params)) 0 (Integer. (:page params)))]
+    {:result jobs
+     :total total
+     :page page}))
+
+
 (defn add-job-editor
   [job-id user-id]
   (insert job_editor (values
@@ -107,7 +122,6 @@
 
 (defn delete-job-tags
   [job-id]
-  (println job-id)
   (delete job_tag (where {:job_id (Integer. job-id)})))
 
 
@@ -119,6 +133,11 @@
     (doseq [tag cleaned-tags]
       (add-tag job-id tag))))
 
+(defn clean-job-budget
+  [params]
+  (if (= "quote" (:job-budget-interval params))
+    (bigdec 0)
+    (bigdec (:job-budget params))))
 
 (defn create-job
   [params]
@@ -131,7 +150,7 @@
                               :job_who_can_apply (:job-who-can-apply params)
                               :job_company_name (:job-company-name params)
                               :job_company_location (:job-company-location params)
-                              :job_budget (bigdec (:job-budget params))
+                              :job_budget (clean-job-budget params)
                               :job_budget_interval (:job-budget-interval params)
                               :job_tags (:job-tags params)
                               :job_created_date (time/sql-time-now)
@@ -156,7 +175,7 @@
                               :job_who_can_apply (:job-who-can-apply params)
                               :job_company_name (:job-company-name params)
                               :job_company_location (:job-company-location params)
-                              :job_budget (bigdec (:job-budget params))
+                              :job_budget (clean-job-budget params)
                               :job_budget_interval (:job-budget-interval params)
                               :job_tags (:job-tags params)
                               :job_updated_date (time/sql-time-now)

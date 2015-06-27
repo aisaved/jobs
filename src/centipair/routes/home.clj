@@ -7,7 +7,7 @@
 
 (defn home-page []
   (layout/render
-    "home.html" ))
+    "projects-home.html" ))
 
 
 (defn services-page []

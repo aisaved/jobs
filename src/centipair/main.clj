@@ -42,6 +42,5 @@
 
 
 (defn -main [& args]
-  (println "starting main")
   (start-app args))
 

@@ -49,7 +49,17 @@
   :delete-enacted? false)
 
 
+(defresource api-public-job-list
+  [& [source]]
+  :available-media-types ["application/json"]
+  :allowed-methods [:get]
+  :handle-ok (fn [context] (if (nil? source) 
+                             (response/liberator-json-response (job-models/get-job-list (:request context))) 
+                             (response/liberator-json-response (job-models/get-job source)))))
+
+
 (defroutes api-job-routes
+  (GET "/api/public/jobs" [] (api-public-job-list))
   (GET "/api/private/jobs" [] (api-job-list))
   (GET "/api/private/job/:id" [id] (api-job-list id))
   (POST "/api/private/job" [] (api-job-crud))

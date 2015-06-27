@@ -43,14 +43,21 @@
       "weekly" (if (< value 1000) {:valid false :message "Weekly budget must be atleast $1000"} {:valid true})
       "monthly" (if (< value 4500) {:valid false :message "Monthly budget must be atleast $4500"} {:valid true})
       "annually" (if (< value 54000) {:valid false :message "Annual budget must be atleast $54000"} {:valid true})
-      "fixed" (if (< value 10000) {:valid false :message "Fixed budget must be atleast $10000"} {:valid true}))))
+      "fixed" (if (< value 10000) {:valid false :message "Fixed budget must be atleast $10000"} {:valid true})
+      "quote" {:valid true})))
 
+
+(defn valid-quote
+  [field]
+  (if (= "quote" (:value (:select field)))
+    {:valid true}
+    {:valid false :message "Please enter a valid budget"}))
 
 (defn validate-job-budget
   [field]
   (if (v/is-float? (:value (:text field)))
     (valid-budget field)
-    {:valid false :message "This field is required"}))
+    (valid-quote field)))
 
 
 (def job-budget (reagent/atom {:id "job-budget-option" :label "Job budget (US dollars)" :type "select-text"
@@ -60,7 +67,8 @@
                                                   {:label "Weekly" :value "weekly"}
                                                   {:label "Monthly" :value "monthly"}
                                                   {:label "Annually" :value "annually"}
-                                                  {:label "Fixed Price" :value "fixed"}]
+                                                  {:label "Fixed Budget" :value "fixed"}
+                                                  {:label "Quote" :value "quote"}]
                                         :default "hourly"}
                                :validator validate-job-budget}))
 
