@@ -1,14 +1,18 @@
 (ns centipair.core.config
-  (:require [clojurewerkz.propertied.properties :as p]
-            [clojure.java.io :as io]))
+  (:require [clojure.edn :as edn]))
+
 
 
 (defn load-db-config
+  "Loads db config from congif.edn file in classpath
+  keys: :db-name :db-username :db-password
+  "
   []
-  (let [db-properties (p/load-from (io/file "config.properties"))
-        db-map (p/properties->map db-properties true)]
-    {:db (:db_name db-map)
-     :user (:db_username db-map)
-     :password (:db_password db-map)}))
+  (let [db-details (clojure.edn/read-string (slurp "config.edn"))]
+    {:db (:db-name db-details)
+     :user (:db-user db-details)
+     :password (:db-password db-details)}))
 
-(def db-config (load-db-config))
+
+;;db config
+(defonce db-config (load-db-config))
