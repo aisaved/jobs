@@ -1,7 +1,8 @@
 (ns centipair.core.db.connection
-  (:use korma.db))
+  (:use korma.db)
+  (:require [centipair.core.config :as config]))
 
-(defdb db (postgres {:db "projects"
-                     :user "centipair"
-                     :password "c3nt1p@1r"}))
+
+
+(defdb db (postgres config/db-config))
 
