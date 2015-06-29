@@ -6,8 +6,7 @@
             [goog.events :as events]
             [goog.history.EventType :as EventType]
             [centipair.job.forms :as job-forms]
-            [centipair.job.list :as job-list]
-            )
+            [centipair.job.list :as job-list])
   (:import goog.History))
 
 

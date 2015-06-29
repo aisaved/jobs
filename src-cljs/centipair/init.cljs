@@ -2,7 +2,7 @@
   (:require [centipair.core.components.notifier :as notifier]
             [centipair.core.user.forms :as user-forms]
             [centipair.core.csrf :as csrf]
-            [centipair.feed.home :refer [render-components]]))
+            [centipair.job.feed :refer [init-feed]]))
 
 
 
@@ -10,5 +10,4 @@
   (do
     (notifier/render-notifier-component)
     (csrf/fetch-csrf-token)
-    ;;(render-components)
-    ))
+    (init-feed)))

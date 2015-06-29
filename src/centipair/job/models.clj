@@ -90,13 +90,18 @@
   (let [params (:params request)
         offset-limit-params (offset-limit (:page params) (:per params))
         jobs (select job
-                     (fields :job_id :job_title)
+                     (fields :job_id
+                             :job_title
+                             :job_location
+                             :job_type
+                             :job_budget
+                             :job_budget_interval)
                      (limit (:limit offset-limit-params))
                      (offset (:offset offset-limit-params)))
-        total (count jobs)
+        ;;total (count jobs)
         page (if (nil? (:page params)) 0 (Integer. (:page params)))]
     {:result jobs
-     :total total
+     ;;:total total
      :page page}))
 
 
